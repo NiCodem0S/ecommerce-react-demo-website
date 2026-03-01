@@ -89,7 +89,7 @@ export default function Auth() {
 							</p>
 						) : (
 							<p>
-								Dont have an account?
+								Don't have an account?
 								<span className='auth-link' onClick={() => setMode('signup')}>
 									{' '}
 									Sign Up
