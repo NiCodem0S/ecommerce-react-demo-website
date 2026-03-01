@@ -11,7 +11,7 @@ export default function AuthProvider({ children }) {
 		const users = JSON.parse(localStorage.getItem('users') || '[]')
 
 		if (users.find(u => u.email == email)) {
-			return { sucess: false, error: 'Email already exists' }
+			return { success: false, error: 'Email already exists' }
 		}
 
 		const newUser = { email, password }
