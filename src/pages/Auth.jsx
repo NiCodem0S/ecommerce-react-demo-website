@@ -1,10 +1,13 @@
 import { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AuthContext } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 export default function Auth() {
 	const [mode, setMode] = useState('signup')
+	const [error, setError] = useState(null)
 	const { signUp, logIn, logOut, user } = useContext(AuthContext)
+	const navigate = useNavigate()
 
 	const {
 		register,
@@ -13,11 +16,19 @@ export default function Auth() {
 	} = useForm()
 
 	function onSubmit(data) {
+		setError(null)
 		let result
 		if (mode === 'signup') {
 			result = signUp(data.email, data.password)
 		} else {
 			result = logIn(data.email, data.password)
+		}
+
+		if (result.success) {
+			mode === 'signup' ? alert('Successfully signed up') : alert('Successfully logged in')
+			navigate('/')
+		} else {
+			setError(result.error)
 		}
 	}
 	return (
@@ -26,6 +37,7 @@ export default function Auth() {
 				<div className='auth-container'>
 					<h1 className='page-title'>{mode === 'signup' ? 'Sign Up' : 'Login'}</h1>
 					<form className='auth-form' onSubmit={handleSubmit(onSubmit)}>
+						{error && <div className='error-message'>{error}</div>}
 						<div className='form-group'>
 							<label className='form-label' htmlFor='email'>
 								Email
@@ -71,6 +83,7 @@ export default function Auth() {
 							<p>
 								Already have an account?
 								<span className='auth-link' onClick={() => setMode('login')}>
+									{' '}
 									Login
 								</span>
 							</p>
